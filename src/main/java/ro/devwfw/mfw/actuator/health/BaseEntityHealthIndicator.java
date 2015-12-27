@@ -5,6 +5,7 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 import ro.devwfw.mfw.model.BaseEntity;
+import ro.devwfw.mfw.model.DemoEntity;
 import ro.devwfw.mfw.service.BaseService;
 
 import java.util.Collection;
@@ -31,7 +32,7 @@ public class BaseEntityHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
 
-        Collection<BaseEntity> baseEntities = baseService.findAll();
+        Collection<BaseEntity> baseEntities = null;//baseService.findAll(DemoEntity.class);
 
         if (baseEntities == null || baseEntities.size() == 0) {
             return Health.down().withDetail("count", 0).build();

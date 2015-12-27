@@ -3,19 +3,20 @@ package ro.devwfw.mfw.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
- * @author: laurentiumiu
- * @createdOn: 12/20/15
+ * @author laurentiumiu
+ * @createdOn 12/20/15
  */
-@Entity
-public class BaseEntity {
+@MappedSuperclass
+public abstract class BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
     private Timestamp updtimestamp;
-    private String description;
 
     public Long getId() {
         return id;
@@ -33,11 +34,21 @@ public class BaseEntity {
         this.updtimestamp = updtimestamp;
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseEntity be = (BaseEntity) o;
+        return Objects.equals(id, be.id);
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "[id=" + id + "]";
     }
 }

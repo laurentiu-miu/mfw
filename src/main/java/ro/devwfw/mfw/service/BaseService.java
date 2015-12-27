@@ -20,7 +20,7 @@ public interface BaseService {
      *
      * @return A Collection of Greeting objects.
      */
-    Collection<BaseEntity> findAll();
+    <T extends BaseEntity> Collection<T> findAll(Class<T> clazz);
 
     /**
      * Find a single Greeting entity by primary key identifier.
@@ -28,7 +28,7 @@ public interface BaseService {
      * @param id A Long primary key identifier.
      * @return A Greeting or <code>null</code> if none found.
      */
-    BaseEntity findOne(Long id);
+    <T extends BaseEntity> T findOne(Class<T> clazz, Long id);
 
     /**
      * Persists a BaseEntity entity in the data store.
@@ -36,7 +36,7 @@ public interface BaseService {
      * @param baseEntity A BaseEntity object to be persisted.
      * @return The persisted BaseEntity entity.
      */
-    BaseEntity create(BaseEntity baseEntity);
+    <T extends BaseEntity> T create(T baseEntity);
 
     /**
      * Updates a previously persisted BaseEntity entity in the data store.
@@ -44,14 +44,14 @@ public interface BaseService {
      * @param baseEntity A BaseEntity object to be updated.
      * @return The updated BaseEntity entity.
      */
-    BaseEntity update(BaseEntity baseEntity);
+    <T extends BaseEntity> T update(T baseEntity);
 
     /**
      * Removes a previously persisted BaseEntity entity from the data store.
      *
      * @param id A Long primary key identifier.
      */
-    void delete(Long id);
+    <T extends BaseEntity> void delete(Class<T> clazz, Long id);
 
     /**
      * Evicts all members of the "baseEntities" cache.

@@ -1,13 +1,22 @@
 package ro.devwfw.mfw.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import ro.devwfw.mfw.model.BaseEntity;
+
+import java.util.Collection;
 
 /**
  * @author laurentiumiu
- * @createdOn 12/20/15
+ * @createdOn 12/27/15
  */
-@Repository
-public interface BaseRepository extends JpaRepository<BaseEntity, Long> {
+public interface BaseRepository {
+    <T extends BaseEntity> Collection<T> findAll(Class<T> clazz);
+
+    <T extends BaseEntity> T findOne(Class<T> clazz, Long id);
+
+    <T extends BaseEntity> T create(T baseEntity);
+
+    <T extends BaseEntity> T update(T baseEntity);
+
+    <T extends BaseEntity> void delete(Class<T> clazz, Long id);
+
 }

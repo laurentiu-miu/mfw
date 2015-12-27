@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.devwfw.mfw.model.BaseEntity;
 import ro.devwfw.mfw.service.BaseService;
+import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
 
 import java.util.Collection;
 
@@ -23,19 +24,27 @@ public class BaseController extends ExceptionHandlerController {
     private BaseService baseService;
 
     /**
+     * The PathVariableToClassMapper maping entity to model.
+     */
+    @Autowired
+    private PathVariableToClassMapper pathVariableToClassMapper;
+
+    /**
      * Web service endpoint to fetch all BaseEntitys entities. The service returns
      * the collection of BaseEntities entities as JSON.
      *
      * @return A ResponseEntity containing a Collection of BaseEntitys objects.
      */
     @RequestMapping(
-            value = "/web/baseEntities",
+            value = "/web/{entityClass}/getAll",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<BaseEntity>> getBaseEntities() {
+    public ResponseEntity<Collection<BaseEntity>> getBaseEntities(@PathVariable("entityClass") String entityClass) {
         logger.info("> getBaseEntities");
 
-        Collection<BaseEntity> baseEntityies = baseService.findAll();
+        Class clazz = pathVariableToClassMapper.getClassByPath(entityClass);
+
+        Collection<BaseEntity> baseEntityies = baseService.findAll(clazz);
 
         logger.info("< getBaseEntities");
         return new ResponseEntity<Collection<BaseEntity>>(baseEntityies, HttpStatus.OK);
@@ -56,13 +65,15 @@ public class BaseController extends ExceptionHandlerController {
      * and a HTTP status code as described in the method comment.
      */
     @RequestMapping(
-            value = "/web/baseEntities/{id}",
+            value = "/web/{entityClass}/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseEntity> getBaseEntity(@PathVariable("id") Long id) {
+    public ResponseEntity<BaseEntity> getBaseEntity(@PathVariable("entityClass") String entityClass, @PathVariable("id") Long id) {
         logger.info("> getBaseEntity id:{}", id);
 
-        BaseEntity BaseEntity = baseService.findOne(id);
+        Class clazz = pathVariableToClassMapper.getClassByPath(entityClass);
+
+        BaseEntity BaseEntity = baseService.findOne(clazz, id);
         if (BaseEntity == null) {
             return new ResponseEntity<BaseEntity>(HttpStatus.NOT_FOUND);
         }
@@ -82,21 +93,21 @@ public class BaseController extends ExceptionHandlerController {
      * If not created successfully, the service returns an empty response body
      * with HTTP status 500.
      *
-     * @param BaseEntity The BaseEntity object to be created.
+     * @param baseEntity The BaseEntity object to be created.
      * @return A ResponseEntity containing a single BaseEntity object, if created
      * successfully, and a HTTP status code as described in the method
      * comment.
      */
     @RequestMapping(
-            value = "/web/baseEntities",
+            value = "/web/{entityClass}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseEntity> createBaseEntity(
-            @RequestBody BaseEntity BaseEntity) {
+            @RequestBody BaseEntity baseEntity) {
         logger.info("> createBaseEntity");
 
-        BaseEntity savedBaseEntity = baseService.create(BaseEntity);
+        BaseEntity savedBaseEntity = baseService.create(baseEntity);
 
         logger.info("< createBaseEntity");
         return new ResponseEntity<BaseEntity>(savedBaseEntity, HttpStatus.CREATED);
@@ -116,27 +127,28 @@ public class BaseController extends ExceptionHandlerController {
      * If not updated successfully, the service returns an empty response body
      * with HTTP status 500.
      *
-     * @param BaseEntity The BaseEntity object to be updated.
+     * @param baseEntity The BaseEntity object to be updated.
      * @return A ResponseEntity containing a single BaseEntity object, if updated
      * successfully, and a HTTP status code as described in the method
      * comment.
      */
     @RequestMapping(
-            value = "/web/baseEntities/{id}",
+            value = "/web/{entityClass}/{id}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseEntity> updateBaseEntity(
-            @RequestBody BaseEntity BaseEntity) {
-        logger.info("> updateBaseEntity id:{}", BaseEntity.getId());
+            @RequestBody BaseEntity baseEntity,
+            @PathVariable("entityClass") String entityClass) {
+        logger.info("> updateBaseEntity id:{}", baseEntity.getId());
 
-        BaseEntity updatedBaseEntity = baseService.update(BaseEntity);
+        BaseEntity updatedBaseEntity = baseService.update(baseEntity);
         if (updatedBaseEntity == null) {
             return new ResponseEntity<BaseEntity>(
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        logger.info("< updateBaseEntity id:{}", BaseEntity.getId());
+        logger.info("< updateBaseEntity id:{}", baseEntity.getId());
         return new ResponseEntity<BaseEntity>(updatedBaseEntity, HttpStatus.OK);
     }
 
@@ -157,13 +169,16 @@ public class BaseController extends ExceptionHandlerController {
      * code as described in the method comment.
      */
     @RequestMapping(
-            value = "/web/baseEntities/{id}",
+            value = "/web/{entityClass}/{id}",
             method = RequestMethod.DELETE)
     public ResponseEntity<BaseEntity> deleteBaseEntity(
+            @PathVariable("entityClass") String entityClass,
             @PathVariable("id") Long id) {
         logger.info("> deleteBaseEntity id:{}", id);
 
-        baseService.delete(id);
+        Class clazz = pathVariableToClassMapper.getClassByPath(entityClass);
+
+        baseService.delete(clazz, id);
 
         logger.info("< deleteBaseEntity id:{}", id);
         return new ResponseEntity<BaseEntity>(HttpStatus.NO_CONTENT);

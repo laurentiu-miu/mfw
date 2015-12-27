@@ -7,6 +7,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
+import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapperImpl;
 
 /**
  * Spring Boot main application class. Serves as both the runtime application
@@ -42,5 +44,19 @@ public class Application {
         GuavaCacheManager cacheManager = new GuavaCacheManager("baseEntities");
 
         return cacheManager;
+    }
+
+    /**
+     * Create a PathVariableToClassMapper implementation class to be used in Controllers where
+     * you need to find
+     *
+     * @return A PathVariableToClassMapper instance
+     */
+    @Bean
+    public PathVariableToClassMapper pathVariableToClassMapper() {
+
+        PathVariableToClassMapper pathVariableToClassMapper = new PathVariableToClassMapperImpl();
+
+        return pathVariableToClassMapper;
     }
 }

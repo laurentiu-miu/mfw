@@ -16,10 +16,11 @@ import ro.devwfw.mfw.repository.BaseRepository;
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The BaseServiceImpl encapsulates all business behaviors operating on the
- * Greeting entity model object.
+ * BaseEntities entity model object.
  *
  * @author laurentiumiu
  * @createdOn 12/20/15
@@ -39,18 +40,18 @@ public class BaseServiceImpl implements BaseService {
     private CounterService counterService;
 
     /**
-     * The Spring Data repository for Greeting entities.
+     * The Spring Data repository for BaseEntity entities.
      */
     @Autowired
     private BaseRepository baseRepository;
 
     @Override
-    public Collection<BaseEntity> findAll() {
+    public <T extends BaseEntity> Collection<T> findAll(Class<T> clazz) {
         logger.info("> findAll");
 
         counterService.increment("method.invoked.baseServiceImpl.findAll");
 
-        Collection<BaseEntity> baseEntities = baseRepository.findAll();
+        Collection<T> baseEntities = baseRepository.findAll(clazz);
 
         logger.info("< findAll");
         return baseEntities;
@@ -60,15 +61,15 @@ public class BaseServiceImpl implements BaseService {
     @Cacheable(
             value = "baseEntities",
             key = "#id")
-    public BaseEntity findOne(Long id) {
+    public <T extends BaseEntity> T findOne(Class<T> clazz, Long id) {
         logger.info("> findOne id:{}", id);
 
         counterService.increment("method.invoked.baseServiceImpl.findOne");
 
-        BaseEntity greeting = baseRepository.findOne(id);
+        T t = (T) baseRepository.findOne(clazz, id);
 
         logger.info("< findOne id:{}", id);
-        return greeting;
+        return t;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class BaseServiceImpl implements BaseService {
     @CachePut(
             value = "baseEntities",
             key = "#result.id")
-    public BaseEntity create(BaseEntity baseEntity) {
+    public <T extends BaseEntity> T create(T objT) {
         logger.info("> create");
 
         counterService.increment("method.invoked.baseServiceImpl.create");
@@ -86,7 +87,7 @@ public class BaseServiceImpl implements BaseService {
         // Ensure the entity object to be created does NOT exist in the
         // repository. Prevent the default behavior of save() which will update
         // an existing entity if the entity matching the supplied id exists.
-        if (baseEntity.getId() != null) {
+        if (objT.getId() != null) {
             // Cannot create BaseEntity with specified ID value
             logger.error(
                     "Attempted to create a BaseEntity, but id attribute was not null.");
@@ -94,10 +95,10 @@ public class BaseServiceImpl implements BaseService {
                     "The id attribute must be null to persist a new entity.");
         }
 
-        BaseEntity savedBaseEntity = baseRepository.save(baseEntity);
+        T objTsaved = (T) baseRepository.create(objT);
 
         logger.info("< create");
-        return savedBaseEntity;
+        return objTsaved;
     }
 
     @Override
@@ -106,28 +107,27 @@ public class BaseServiceImpl implements BaseService {
             readOnly = false)
     @CachePut(
             value = "baseEntities",
-            key = "#baseEntity.id")
-    public BaseEntity update(BaseEntity baseEntity) {
-        logger.info("> update id:{}", baseEntity.getId());
+            key = "#objT.id")
+    public <T extends BaseEntity> T update(T objT) {
+        logger.info("> update id:{}", objT.getId());
 
         counterService.increment("method.invoked.baseServiceImpl.update");
 
         // Ensure the entity object to be updated exists in the repository to
         // prevent the default behavior of save() which will persist a new
         // entity if the entity matching the id does not exist
-        BaseEntity baseEntityToUpdate = findOne(baseEntity.getId());
-        if (baseEntityToUpdate == null) {
+        T objTfind = (T) findOne(objT.getClass(), objT.getId());
+        if (objTfind == null) {
             // Cannot update BaseEntity that hasn't been persisted
             logger.error(
                     "Attempted to update a BaseEntity, but the entity does not exist.");
             throw new NoResultException("Requested entity not found.");
         }
 
-        baseEntityToUpdate.setDescription(baseEntity.getDescription());
-        BaseEntity updatedBaseEntity = baseRepository.save(baseEntityToUpdate);
+        T objTupdated = (T) baseRepository.update(objTfind);
 
-        logger.info("< update id:{}", baseEntity.getId());
-        return updatedBaseEntity;
+        logger.info("< update id:{}", objTupdated.getId());
+        return objTupdated;
     }
 
     @Override
@@ -137,12 +137,12 @@ public class BaseServiceImpl implements BaseService {
     @CacheEvict(
             value = "baseEntities",
             key = "#id")
-    public void delete(Long id) {
+    public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
         logger.info("> delete id:{}", id);
 
         counterService.increment("method.invoked.baseServiceImpl.delete");
 
-        baseRepository.delete(id);
+        baseRepository.delete(clazz, id);
 
         logger.info("< delete id:{}", id);
     }
