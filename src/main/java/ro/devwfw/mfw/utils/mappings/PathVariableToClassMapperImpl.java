@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author laurentiumiu
- * @createdOn 12/27/15
+ * @author LaurentiuM
+ * @version createdOn: 12/27/15
  */
 public class PathVariableToClassMapperImpl implements PathVariableToClassMapper {
 
@@ -45,6 +45,10 @@ public class PathVariableToClassMapperImpl implements PathVariableToClassMapper 
                     mappings.put(annotation.value(), clazz);
             }
         }
+        return mappings;
+    }
+
+    public Map<String, Class<? extends BaseEntity>> getMappings() {
         return mappings;
     }
 }

@@ -18,8 +18,8 @@ import java.util.Map;
  * response when Exceptions are thrown from <code>@RequestMapping</code>
  * annotated Controller methods.
  *
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 public class ExceptionHandlerController {
 

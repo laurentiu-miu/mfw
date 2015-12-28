@@ -22,8 +22,8 @@ import java.util.List;
  * The BaseServiceImpl encapsulates all business behaviors operating on the
  * BaseEntities entity model object.
  *
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 @Service
 @Transactional(
@@ -49,7 +49,7 @@ public class BaseServiceImpl implements BaseService {
     public <T extends BaseEntity> Collection<T> findAll(Class<T> clazz) {
         logger.info("> findAll");
 
-        counterService.increment("method.invoked.baseServiceImpl.findAll");
+        counterService.increment("method.invoked.baseServiceImpl.findAll" + " on " + clazz);
 
         Collection<T> baseEntities = baseRepository.findAll(clazz);
 
@@ -64,7 +64,7 @@ public class BaseServiceImpl implements BaseService {
     public <T extends BaseEntity> T findOne(Class<T> clazz, Long id) {
         logger.info("> findOne id:{}", id);
 
-        counterService.increment("method.invoked.baseServiceImpl.findOne");
+        counterService.increment("method.invoked.baseServiceImpl.findOne" + " on " + clazz);
 
         T t = (T) baseRepository.findOne(clazz, id);
 
@@ -82,7 +82,7 @@ public class BaseServiceImpl implements BaseService {
     public <T extends BaseEntity> T create(T objT) {
         logger.info("> create");
 
-        counterService.increment("method.invoked.baseServiceImpl.create");
+        counterService.increment("method.invoked.baseServiceImpl.create" + " on " + objT.getClass());
 
         // Ensure the entity object to be created does NOT exist in the
         // repository. Prevent the default behavior of save() which will update
@@ -111,7 +111,7 @@ public class BaseServiceImpl implements BaseService {
     public <T extends BaseEntity> T update(T objT) {
         logger.info("> update id:{}", objT.getId());
 
-        counterService.increment("method.invoked.baseServiceImpl.update");
+        counterService.increment("method.invoked.baseServiceImpl.update" + " on " + objT.getClass());
 
         // Ensure the entity object to be updated exists in the repository to
         // prevent the default behavior of save() which will persist a new
@@ -140,7 +140,7 @@ public class BaseServiceImpl implements BaseService {
     public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
         logger.info("> delete id:{}", id);
 
-        counterService.increment("method.invoked.baseServiceImpl.delete");
+        counterService.increment("method.invoked.baseServiceImpl.delete" + " on " + clazz);
 
         baseRepository.delete(clazz, id);
 

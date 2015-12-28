@@ -2,13 +2,17 @@ package ro.devwfw.mfw.actuator.health;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthAggregator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 import ro.devwfw.mfw.model.BaseEntity;
 import ro.devwfw.mfw.model.DemoEntity;
 import ro.devwfw.mfw.service.BaseService;
+import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The BaseEntityHealthIndicator is a custom Spring Boot Actuator HealthIndicator
@@ -17,8 +21,8 @@ import java.util.Collection;
  * portion of the application's health, returing a Health object which indicates
  * that status and, optionally, additional health attributes.
  *
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 @Component
 public class BaseEntityHealthIndicator implements HealthIndicator {
@@ -29,15 +33,18 @@ public class BaseEntityHealthIndicator implements HealthIndicator {
     @Autowired
     private BaseService baseService;
 
+    /**
+     * The PathVariableToClassMapper maps entity to model.
+     */
+    @Autowired
+    private PathVariableToClassMapper pathVariableToClassMapper;
+
     @Override
     public Health health() {
-
-        Collection<BaseEntity> baseEntities = null;//baseService.findAll(DemoEntity.class);
-
-        if (baseEntities == null || baseEntities.size() == 0) {
-            return Health.down().withDetail("count", 0).build();
-        }
-
-        return Health.up().withDetail("count", baseEntities.size()).build();
+        Map<String, Class<? extends BaseEntity>> entityMap = pathVariableToClassMapper.getMappings();
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        entityMap.entrySet().stream().forEach(entry -> map.put(entry.getKey(), baseService.findAll(entry.getValue()).size()));
+        return Health.up().withDetail("entityMap", map).build();
     }
+
 }

@@ -14,8 +14,9 @@ import java.util.Map;
  * Provides attributes which describe Exceptions and the context in which they
  * occurred.
  *
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
+ *
  * @see DefaultExceptionAttributes
  */
 public interface ExceptionAttributes {

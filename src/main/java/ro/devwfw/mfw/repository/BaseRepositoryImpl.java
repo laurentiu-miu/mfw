@@ -12,8 +12,8 @@ import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 /**
- * @author laurentiumiu
- * @createdOn 12/27/15
+ * @author LaurentiuM
+ * @version createdOn: 12/27/15
  */
 @Repository
 public class BaseRepositoryImpl implements BaseRepository {

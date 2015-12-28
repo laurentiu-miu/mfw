@@ -1,8 +1,8 @@
 package ro.devwfw.mfw.utils.annotations;
 
 /**
- * @author laurentiumiu
- * @createdOn 12/27/15
+ * @author LaurentiuM
+ * @version createdOn: 12/27/15
  */
 
 import java.lang.annotation.ElementType;

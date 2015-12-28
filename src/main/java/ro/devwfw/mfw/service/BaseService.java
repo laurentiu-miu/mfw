@@ -11,8 +11,8 @@ import java.util.Collection;
  * This interface should be injected into BaseService clients, not the
  * implementation bean.
  *
- * @author: laurentiumiu
- * @createdOn: 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 public interface BaseService {
     /**

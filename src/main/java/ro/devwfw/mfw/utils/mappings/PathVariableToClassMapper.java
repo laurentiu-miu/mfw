@@ -2,10 +2,14 @@ package ro.devwfw.mfw.utils.mappings;
 
 import ro.devwfw.mfw.model.BaseEntity;
 
+import java.util.Map;
+
 /**
- * @author laurentiumiu
- * @createdOn 12/27/15
+ * @author LaurentiuM
+ * @version createdOn: 12/27/15
  */
 public interface PathVariableToClassMapper {
     <T extends BaseEntity> Class<T> getClassByPath(String path);
+
+    public Map<String, Class<? extends BaseEntity>> getMappings();
 }

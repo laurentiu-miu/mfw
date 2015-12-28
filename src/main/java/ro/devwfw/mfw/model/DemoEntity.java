@@ -5,8 +5,8 @@ import ro.devwfw.mfw.utils.annotations.EntityName;
 import javax.persistence.Entity;
 
 /**
- * @author laurentiumiu
- * @createdOn 12/27/15
+ * @author LaurentiuM
+ * @version createdOn: 12/27/15
  */
 @Entity
 @EntityName("demo")

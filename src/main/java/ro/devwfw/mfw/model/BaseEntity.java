@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 @MappedSuperclass
 public abstract class BaseEntity {

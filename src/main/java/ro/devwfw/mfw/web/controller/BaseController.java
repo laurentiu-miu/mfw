@@ -12,8 +12,8 @@ import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
 import java.util.Collection;
 
 /**
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 @RestController
 public class BaseController extends ExceptionHandlerController {
@@ -24,7 +24,7 @@ public class BaseController extends ExceptionHandlerController {
     private BaseService baseService;
 
     /**
-     * The PathVariableToClassMapper maping entity to model.
+     * The PathVariableToClassMapper maps entity to model.
      */
     @Autowired
     private PathVariableToClassMapper pathVariableToClassMapper;

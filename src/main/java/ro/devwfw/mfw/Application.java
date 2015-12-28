@@ -14,8 +14,8 @@ import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapperImpl;
  * Spring Boot main application class. Serves as both the runtime application
  * entry point and the central Java configuration class.
  *
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
  */
 @SpringBootApplication
 @EnableTransactionManagement

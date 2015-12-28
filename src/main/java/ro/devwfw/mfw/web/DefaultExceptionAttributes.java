@@ -28,8 +28,9 @@ import java.util.Map;
  * <li>path - The HTTP request servlet path when the exception was thrown
  * </ul>
  *
- * @author laurentiumiu
- * @createdOn 12/20/15
+ * @author LaurentiuM
+ * @version createdOn: 12/20/15
+ *
  * @see ExceptionAttributes
  */
 public class DefaultExceptionAttributes implements ExceptionAttributes {
