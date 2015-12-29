@@ -45,6 +45,11 @@ public class BaseServiceImpl implements BaseService {
     @Autowired
     private BaseRepository baseRepository;
 
+    /**
+     * Find all BaseEntities entities.
+     *
+     * @return A Collection of BaseEnity objects.
+     */
     @Override
     public <T extends BaseEntity> Collection<T> findAll(Class<T> clazz) {
         logger.info("> findAll");
@@ -57,6 +62,13 @@ public class BaseServiceImpl implements BaseService {
         return baseEntities;
     }
 
+    /**
+     * Finds the persisted object giving the primary key identifier and the class type.
+     *
+     * @param clazz of the entity that is persisted
+     * @param id    A Long primary key identifier.
+     * @return The object of the type class and identified by id
+     */
     @Override
     @Cacheable(
             value = "baseEntities",
@@ -72,6 +84,12 @@ public class BaseServiceImpl implements BaseService {
         return t;
     }
 
+    /**
+     * Persists a BaseEntity entity in the data store.
+     *
+     * @param objT A BaseEntity object to be persisted.
+     * @return The persisted BaseEntity entity.
+     */
     @Override
     @Transactional(
             propagation = Propagation.REQUIRED,
@@ -84,9 +102,6 @@ public class BaseServiceImpl implements BaseService {
 
         counterService.increment("method.invoked.baseServiceImpl.create" + " on " + objT.getClass());
 
-        // Ensure the entity object to be created does NOT exist in the
-        // repository. Prevent the default behavior of save() which will update
-        // an existing entity if the entity matching the supplied id exists.
         if (objT.getId() != null) {
             // Cannot create BaseEntity with specified ID value
             logger.error(
@@ -101,6 +116,12 @@ public class BaseServiceImpl implements BaseService {
         return objTsaved;
     }
 
+    /**
+     * Updates a previously persisted BaseEntity entity in the data store.
+     *
+     * @param objT A BaseEntity object to be updated.
+     * @return The updated BaseEntity entity.
+     */
     @Override
     @Transactional(
             propagation = Propagation.REQUIRED,
@@ -113,9 +134,6 @@ public class BaseServiceImpl implements BaseService {
 
         counterService.increment("method.invoked.baseServiceImpl.update" + " on " + objT.getClass());
 
-        // Ensure the entity object to be updated exists in the repository to
-        // prevent the default behavior of save() which will persist a new
-        // entity if the entity matching the id does not exist
         T objTfind = (T) findOne(objT.getClass(), objT.getId());
         if (objTfind == null) {
             // Cannot update BaseEntity that hasn't been persisted
@@ -130,6 +148,12 @@ public class BaseServiceImpl implements BaseService {
         return objTupdated;
     }
 
+    /**
+     * Removes a previously persisted BaseEntity entity from the data store.
+     *
+     * @param id A Long primary key identifier.
+     * @param clazz Of the entity that is persisted
+     */
     @Override
     @Transactional(
             propagation = Propagation.REQUIRED,
@@ -147,6 +171,9 @@ public class BaseServiceImpl implements BaseService {
         logger.info("< delete id:{}", id);
     }
 
+    /**
+     * Evicts all members of the "baseEntities" cache.
+     */
     @Override
     @CacheEvict(
             value = "baseEntities",

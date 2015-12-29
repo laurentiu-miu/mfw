@@ -13,20 +13,43 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * The PathVariableToClassMapperImpl is used to map at runtime entities annotated withe @EntityName
+ * so that you know what class to persist.
+ *
  * @author LaurentiuM
  * @version createdOn: 12/27/15
  */
 public class PathVariableToClassMapperImpl implements PathVariableToClassMapper {
 
+    /**
+     * pakeget to scan for annotation @EntityName
+     */
     @Value("${packageToBeScanned.by.entityName}")
     private String packageToBeScanned;
+    /**
+     * map containing entities names and classes of the entities
+     */
     private Map<String, Class<? extends BaseEntity>> mappings;
 
+    /**
+     * Returns the entitie class giving the entity name
+     *
+     * @param path the entity name from annotation @EntityName
+     * @param <T>  Class type
+     * @return The entity class by the entity name
+     */
     @Override
     public <T extends BaseEntity> Class<T> getClassByPath(String path) {
         return (Class<T>) mappings.get(path);
     }
 
+    /**
+     * Construct at runtime a map which contains entity names annotated with @EntityName and the
+     * class of the entity.
+     *
+     * @return A map contining fo entity name and class.
+     * @throws ClassNotFoundException
+     */
     @PostConstruct
     private Map<String, Class<? extends BaseEntity>> createMappings() throws ClassNotFoundException {
 
@@ -48,6 +71,11 @@ public class PathVariableToClassMapperImpl implements PathVariableToClassMapper 
         return mappings;
     }
 
+    /**
+     * This is the map containing entities names and classes of the entities
+     *
+     * @return A map containing entity name and class
+     */
     public Map<String, Class<? extends BaseEntity>> getMappings() {
         return mappings;
     }

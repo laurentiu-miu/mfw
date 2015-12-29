@@ -24,7 +24,7 @@ public class BaseController extends ExceptionHandlerController {
     private BaseService baseService;
 
     /**
-     * The PathVariableToClassMapper maps entity to model.
+     * The PathVariableToClassMapper maps class by entity name in the model layer.
      */
     @Autowired
     private PathVariableToClassMapper pathVariableToClassMapper;
@@ -32,8 +32,9 @@ public class BaseController extends ExceptionHandlerController {
     /**
      * Web service endpoint to fetch all BaseEntitys entities. The service returns
      * the collection of BaseEntities entities as JSON.
+     * @param entityClass The entity name maped in @EntityName("demo") annotation
      *
-     * @return A ResponseEntity containing a Collection of BaseEntitys objects.
+     * @return A ResponseEntity containing a Collection of BaseEntities objects.
      */
     @RequestMapping(
             value = "/web/{entityClass}/getAll",
@@ -59,6 +60,7 @@ public class BaseController extends ExceptionHandlerController {
      * If not found, the service returns an empty response body with HTTP status
      * 404.
      *
+     * @param entityClass The entity name maped in @EntityName("demo") annotation
      * @param id A Long URL path variable containing the BaseEntity primary key
      *           identifier.
      * @return A ResponseEntity containing a single BaseEntity object, if found,
@@ -128,6 +130,8 @@ public class BaseController extends ExceptionHandlerController {
      * with HTTP status 500.
      *
      * @param baseEntity The BaseEntity object to be updated.
+     * @param entityClass The entity name maped in @EntityName("demo") annotation
+     *
      * @return A ResponseEntity containing a single BaseEntity object, if updated
      * successfully, and a HTTP status code as described in the method
      * comment.
@@ -163,6 +167,7 @@ public class BaseController extends ExceptionHandlerController {
      * If not deleted successfully, the service returns an empty response body
      * with HTTP status 500.
      *
+     * @param entityClass The entity name maped in @EntityName("demo") annotation
      * @param id A Long URL path variable containing the BaseEntity primary key
      *           identifier.
      * @return A ResponseEntity with an empty response body and a HTTP status

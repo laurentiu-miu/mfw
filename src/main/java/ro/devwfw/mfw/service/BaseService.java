@@ -16,14 +16,14 @@ import java.util.Collection;
  */
 public interface BaseService {
     /**
-     * Find all Greeting entities.
+     * Find all BaseEntities entities.
      *
-     * @return A Collection of Greeting objects.
+     * @return A Collection of BaseEnity objects.
      */
     <T extends BaseEntity> Collection<T> findAll(Class<T> clazz);
 
     /**
-     * Find a single Greeting entity by primary key identifier.
+     * Find a single BaseEntity entity by primary key identifier.
      *
      * @param id A Long primary key identifier.
      * @return A Greeting or <code>null</code> if none found.
@@ -50,6 +50,7 @@ public interface BaseService {
      * Removes a previously persisted BaseEntity entity from the data store.
      *
      * @param id A Long primary key identifier.
+     * @param clazz Of the entity that is persisted
      */
     <T extends BaseEntity> void delete(Class<T> clazz, Long id);
 

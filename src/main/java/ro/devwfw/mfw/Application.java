@@ -48,7 +48,7 @@ public class Application {
 
     /**
      * Create a PathVariableToClassMapper implementation class to be used in Controllers where
-     * you need to find
+     * you need to find the class by entity name
      *
      * @return A PathVariableToClassMapper instance
      */

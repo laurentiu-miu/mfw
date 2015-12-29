@@ -13,6 +13,7 @@ import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The BaseEntityHealthIndicator is a custom Spring Boot Actuator HealthIndicator
@@ -39,11 +40,13 @@ public class BaseEntityHealthIndicator implements HealthIndicator {
     @Autowired
     private PathVariableToClassMapper pathVariableToClassMapper;
 
+    /**
+     * @return entityMap containing the total number of persistent entities group by class
+     */
     @Override
     public Health health() {
         Map<String, Class<? extends BaseEntity>> entityMap = pathVariableToClassMapper.getMappings();
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        entityMap.entrySet().stream().forEach(entry -> map.put(entry.getKey(), baseService.findAll(entry.getValue()).size()));
+        Map<String, Integer> map = entityMap.entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey(), entry -> baseService.findAll(entry.getValue()).size()));
         return Health.up().withDetail("entityMap", map).build();
     }
 
