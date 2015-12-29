@@ -14,11 +14,11 @@ import java.util.Map;
 public interface PathVariableToClassMapper {
 
     /**
-     * Construct at runtime a map which contains entity names annotated with @EntityName and the
-     * class of the entity.
+     * Returns the entitie class giving the entity name
      *
-     * @return A map contining fo entity name and class.
-     * @throws ClassNotFoundException
+     * @param path the entity name from annotation @EntityName
+     * @param <T> the class type of BaseEnity
+     * @return The entity class by the entity name
      */
     <T extends BaseEntity> Class<T> getClassByPath(String path);
 

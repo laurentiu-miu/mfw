@@ -35,7 +35,7 @@ public class PathVariableToClassMapperImpl implements PathVariableToClassMapper 
      * Returns the entitie class giving the entity name
      *
      * @param path the entity name from annotation @EntityName
-     * @param <T>  Class type
+     * @param <T> the class type of BaseEnity
      * @return The entity class by the entity name
      */
     @Override
@@ -48,7 +48,7 @@ public class PathVariableToClassMapperImpl implements PathVariableToClassMapper 
      * class of the entity.
      *
      * @return A map contining fo entity name and class.
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException if the class is not found
      */
     @PostConstruct
     private Map<String, Class<? extends BaseEntity>> createMappings() throws ClassNotFoundException {

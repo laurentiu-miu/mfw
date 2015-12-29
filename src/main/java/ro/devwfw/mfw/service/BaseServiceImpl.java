@@ -48,6 +48,7 @@ public class BaseServiceImpl implements BaseService {
     /**
      * Find all BaseEntities entities.
      *
+     * @param <T> the class type of BaseEnity
      * @return A Collection of BaseEnity objects.
      */
     @Override
@@ -67,6 +68,7 @@ public class BaseServiceImpl implements BaseService {
      *
      * @param clazz of the entity that is persisted
      * @param id    A Long primary key identifier.
+     * @param <T> the class type of BaseEnity
      * @return The object of the type class and identified by id
      */
     @Override
@@ -88,6 +90,7 @@ public class BaseServiceImpl implements BaseService {
      * Persists a BaseEntity entity in the data store.
      *
      * @param objT A BaseEntity object to be persisted.
+     * @param <T> the class type of BaseEnity
      * @return The persisted BaseEntity entity.
      */
     @Override
@@ -120,6 +123,7 @@ public class BaseServiceImpl implements BaseService {
      * Updates a previously persisted BaseEntity entity in the data store.
      *
      * @param objT A BaseEntity object to be updated.
+     * @param <T> the class type of BaseEnity
      * @return The updated BaseEntity entity.
      */
     @Override
@@ -152,6 +156,7 @@ public class BaseServiceImpl implements BaseService {
      * Removes a previously persisted BaseEntity entity from the data store.
      *
      * @param id A Long primary key identifier.
+     * @param <T> the class type of BaseEnity
      * @param clazz Of the entity that is persisted
      */
     @Override
