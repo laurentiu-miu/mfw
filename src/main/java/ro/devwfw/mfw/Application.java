@@ -6,9 +6,15 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
 import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapperImpl;
+import ro.devwfw.mfw.web.component.EntityObjectArgumentResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Spring Boot main application class. Serves as both the runtime application
@@ -59,4 +65,5 @@ public class Application {
 
         return pathVariableToClassMapper;
     }
+
 }

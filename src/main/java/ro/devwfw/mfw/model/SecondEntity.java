@@ -3,6 +3,8 @@ package ro.devwfw.mfw.model;
 import ro.devwfw.mfw.utils.annotations.EntityName;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * @author LaurentiuM
@@ -11,7 +13,11 @@ import javax.persistence.Entity;
 @Entity
 @EntityName("second")
 public class SecondEntity extends BaseEntity {
+
     private String extraProperty;
+
+    @ManyToOne
+    private DemoEntity demoEntity;
 
     public String getExtraProperty() {
         return extraProperty;
@@ -19,5 +25,13 @@ public class SecondEntity extends BaseEntity {
 
     public void setExtraProperty(String extraProperty) {
         this.extraProperty = extraProperty;
+    }
+
+    public DemoEntity getDemoEntity() {
+        return demoEntity;
+    }
+
+    public void setDemoEntity(DemoEntity demoEntity) {
+        this.demoEntity = demoEntity;
     }
 }

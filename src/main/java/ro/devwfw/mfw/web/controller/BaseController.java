@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.devwfw.mfw.model.BaseEntity;
 import ro.devwfw.mfw.service.BaseService;
 import ro.devwfw.mfw.utils.mappings.PathVariableToClassMapper;
+import ro.devwfw.mfw.web.component.RequestBodyEntityObject;
 
 import java.util.Collection;
 
@@ -28,6 +29,26 @@ public class BaseController extends ExceptionHandlerController {
      */
     @Autowired
     private PathVariableToClassMapper pathVariableToClassMapper;
+
+    /**
+     * Creates an instance of type entityClass.
+     *
+     * @param entityClass type of entityClass
+     * @param <T> type of entityClass
+     * @return An instance of entityClass
+     */
+    @ModelAttribute("entityObject")
+    public <T extends BaseEntity> BaseEntity loadObject(@PathVariable("entityClass") String entityClass) {
+        Class<T> clazz = pathVariableToClassMapper.getClassByPath(entityClass);
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Web service endpoint to fetch all BaseEntitys entities. The service returns
@@ -105,14 +126,14 @@ public class BaseController extends ExceptionHandlerController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseEntity> createBaseEntity(
-            @RequestBody BaseEntity baseEntity) {
+    public <T extends BaseEntity> ResponseEntity<T> createBaseEntity(
+            @RequestBodyEntityObject("entityObject") T baseEntity) {
         logger.info("> createBaseEntity");
 
-        BaseEntity savedBaseEntity = baseService.create(baseEntity);
+        T savedBaseEntity = baseService.create(baseEntity);
 
         logger.info("< createBaseEntity");
-        return new ResponseEntity<BaseEntity>(savedBaseEntity, HttpStatus.CREATED);
+        return new ResponseEntity<T>(savedBaseEntity, HttpStatus.CREATED);
     }
 
     /**
@@ -141,19 +162,19 @@ public class BaseController extends ExceptionHandlerController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BaseEntity> updateBaseEntity(
-            @RequestBody BaseEntity baseEntity,
+    public <T extends BaseEntity> ResponseEntity<T> updateBaseEntity(
+            @ModelAttribute("objectToEdit") T baseEntity,
             @PathVariable("entityClass") String entityClass) {
         logger.info("> updateBaseEntity id:{}", baseEntity.getId());
 
-        BaseEntity updatedBaseEntity = baseService.update(baseEntity);
+        T updatedBaseEntity = baseService.update(baseEntity);
         if (updatedBaseEntity == null) {
-            return new ResponseEntity<BaseEntity>(
+            return new ResponseEntity<T>(
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         logger.info("< updateBaseEntity id:{}", baseEntity.getId());
-        return new ResponseEntity<BaseEntity>(updatedBaseEntity, HttpStatus.OK);
+        return new ResponseEntity<T>(updatedBaseEntity, HttpStatus.OK);
     }
 
     /**
