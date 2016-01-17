@@ -146,7 +146,7 @@ public class BaseServiceImpl implements BaseService {
             throw new NoResultException("Requested entity not found.");
         }
 
-        T objTupdated = (T) baseRepository.update(objTfind);
+        T objTupdated = (T) baseRepository.update(objT);
 
         logger.info("< update id:{}", objTupdated.getId());
         return objTupdated;

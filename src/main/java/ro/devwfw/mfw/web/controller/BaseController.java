@@ -163,7 +163,7 @@ public class BaseController extends ExceptionHandlerController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public <T extends BaseEntity> ResponseEntity<T> updateBaseEntity(
-            @ModelAttribute("objectToEdit") T baseEntity,
+            @RequestBodyEntityObject("entityObject") T baseEntity,
             @PathVariable("entityClass") String entityClass) {
         logger.info("> updateBaseEntity id:{}", baseEntity.getId());
 
